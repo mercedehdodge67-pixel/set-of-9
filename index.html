@@ -36,4 +36,173 @@
       text-align: center;
       transition: all 0.3s;
     }
-    input[type="text"]:
+    input[type="text"]:focus {
+      border-color: #1976d2;
+      outline: none;
+      box-shadow: 0 0 4px #64b5f6;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 22px;
+      border: none;
+      background-color: #1976d2;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #0d47a1;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #2e7d32;
+      font-weight: bold;
+    }
+    .checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0 20px;
+    }
+    label {
+      background: #e3f2fd;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    label:hover {
+      background: #bbdefb;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>🧮 آزمایشگاه مجموعه‌ها - پایه نهم</h1>
+
+    <div id="step1">
+      <p>چند مجموعه می‌خواهی وارد کنی؟ (۲ تا ۴)</p>
+      <input type="number" id="numSets" min="2" max="4" value="2">
+      <button onclick="createSetInputs()">تأیید</button>
+    </div>
+
+    <div id="setInputs"></div>
+    <div id="checkboxArea"></div>
+    <div id="buttons"></div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let sets = [];
+
+    // ساخت ورودی‌ها
+    function createSetInputs() {
+      const num = parseInt(document.getElementById("numSets").value);
+      const container = document.getElementById("setInputs");
+      const checkArea = document.getElementById("checkboxArea");
+      const btns = document.getElementById("buttons");
+      container.innerHTML = "";
+      checkArea.innerHTML = "";
+      btns.innerHTML = "";
+      sets = [];
+
+      // ساخت ورودی برای هر مجموعه
+      for (let i = 1; i <= num; i++) {
+        container.innerHTML += `
+          <div class="set-input">
+            <label>مجموعه ${i}: { </label>
+            <input type="text" id="set${i}" placeholder="مثلاً 1,2,3">
+            <label> }</label>
+          </div>
+        `;
+      }
+
+      // ساخت چک‌باکس‌ها برای انتخاب مجموعه‌ها
+      checkArea.innerHTML = "<p>مجموعه‌های مورد نظر را انتخاب کن:</p><div class='checkboxes'>";
+      for (let i = 1; i <= num; i++) {
+        checkArea.innerHTML += `
+          <label><input type="checkbox" class="setCheckbox" value="${i}"> مجموعه ${i}</label>
+        `;
+      }
+      checkArea.innerHTML += "</div>";
+
+      // دکمه‌های عملیات
+      btns.innerHTML = `
+        <button onclick="union()">اجتماع</button>
+        <button onclick="intersection()">اشتراک</button>
+        <button onclick="difference()">تفاضل (اولی منهای دومی)</button>
+      `;
+    }
+
+    // دریافت مجموعه‌ها
+    function getSets() {
+      sets = [];
+      const num = parseInt(document.getElementById("numSets").value);
+      for (let i = 1; i <= num; i++) {
+        const input = document.getElementById("set" + i).value;
+        const arr = input.split(",").map(x => x.trim()).filter(x => x !== "");
+        sets.push(new Set(arr));
+      }
+    }
+
+    // دریافت مجموعه‌های انتخاب‌شده از چک‌باکس
+    function getSelectedSets() {
+      const selected = [...document.querySelectorAll(".setCheckbox:checked")].map(c => parseInt(c.value) - 1);
+      if (selected.length === 0) {
+        alert("لطفاً حداقل یک مجموعه انتخاب کن.");
+      }
+      return selected;
+    }
+
+    // اجتماع
+    function union() {
+      getSets();
+      const selected = getSelectedSets();
+      if (selected.length < 2) {
+        alert("برای اجتماع حداقل دو مجموعه انتخاب کن.");
+        return;
+      }
+      let result = new Set();
+      selected.forEach(i => sets[i].forEach(x => result.add(x)));
+      showResult(result, `اجتماع مجموعه‌های ${selected.map(i => i+1).join(", ")}`);
+    }
+
+    // اشتراک
+    function intersection() {
+      getSets();
+      const selected = getSelectedSets();
+      if (selected.length < 2) {
+        alert("برای اشتراک حداقل دو مجموعه انتخاب کن.");
+        return;
+      }
+      let result = new Set(sets[selected[0]]);
+      for (let j = 1; j < selected.length; j++) {
+        result = new Set([...result].filter(x => sets[selected[j]].has(x)));
+      }
+      showResult(result, `اشتراک مجموعه‌های ${selected.map(i => i+1).join(", ")}`);
+    }
+
+    // تفاضل (اولی منهای دومی)
+    function difference() {
+      getSets();
+      const selected = getSelectedSets();
+      if (selected.length !== 2) {
+        alert("برای تفاضل دقیقاً دو مجموعه انتخاب کن.");
+        return;
+      }
+      let result = new Set([...sets[selected[0]]].filter(x => !sets[selected[1]].has(x)));
+      showResult(result, `تفاضل مجموعه ${selected[0] + 1} منهای ${selected[1] + 1}`);
+    }
+
+    // نمایش نتیجه
+    function showResult(set, title) {
+      document.getElementById("result").innerHTML = `${title}: { ${[...set].join(", ")} }`;
+    }
+  </script>
+</body>
+</html>
