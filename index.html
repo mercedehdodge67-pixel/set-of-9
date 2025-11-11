@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>آزمایشگاه ریاضی پایه نهم - مجموعه‌ها</title>
+  <title>آزمایشگاه مجموعه‌ها - پایه نهم</title>
   <style>
     body {
       font-family: "Vazir", "Tahoma", sans-serif;
@@ -82,69 +82,7 @@
   <script>
     let sets = [];
 
+    // ساخت ورودی مجموعه‌ها
     function createSetInputs() {
       const num = parseInt(document.getElementById("numSets").value);
-      const container = document.getElementById("setInputs");
-      const btns = document.getElementById("buttons");
-      container.innerHTML = "";
-      btns.innerHTML = "";
-      sets = [];
-
-      for (let i = 1; i <= num; i++) {
-        container.innerHTML += `
-          <div class="set-input">
-            <label>مجموعه ${i}: { </label>
-            <input type="text" id="set${i}" placeholder="مثلاً 1,2,3">
-            <label> }</label>
-          </div>
-        `;
-      }
-
-      btns.innerHTML = `
-        <button onclick="union()">اجتماع</button>
-        <button onclick="intersection()">اشتراک</button>
-        <button onclick="difference()">تفاضل (مجموعه ۱ منهای بقیه)</button>
-      `;
-    }
-
-    function getSets() {
-      sets = [];
-      const num = parseInt(document.getElementById("numSets").value);
-      for (let i = 1; i <= num; i++) {
-        const input = document.getElementById("set" + i).value;
-        const arr = input.split(",").map(x => x.trim()).filter(x => x !== "");
-        sets.push(new Set(arr));
-      }
-    }
-
-    function union() {
-      getSets();
-      let result = new Set();
-      sets.forEach(s => s.forEach(x => result.add(x)));
-      showResult(result, "اجتماع");
-    }
-
-    function intersection() {
-      getSets();
-      let result = new Set(sets[0]);
-      for (let i = 1; i < sets.length; i++) {
-        result = new Set([...result].filter(x => sets[i].has(x)));
-      }
-      showResult(result, "اشتراک");
-    }
-
-    function difference() {
-      getSets();
-      let result = new Set(sets[0]);
-      for (let i = 1; i < sets.length; i++) {
-        result = new Set([...result].filter(x => !sets[i].has(x)));
-      }
-      showResult(result, "تفاضل");
-    }
-
-    function showResult(set, title) {
-      document.getElementById("result").innerHTML = `${title}: { ${[...set].join(", ")} }`;
-    }
-  </script>
-</body>
-</html>
+      const container = document.getElementById("s
