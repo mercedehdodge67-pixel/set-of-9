@@ -3,66 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ÂÒãÇíÔÇå ãÌãæÚååÇ - Çíå äåã</title>
+  <title>Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡ Ø±ÛŒØ§Ø¶ÛŒ Ù¾Ø§ÛŒÙ‡ Ù†Ù‡Ù… - Ù…Ø¬Ù…ÙˆØ¹Ù‡â€ŒÙ‡Ø§</title>
   <style>
     body {
-      font-family: "Vazir", sans-serif;
-      background: #f5f7fa;
+      font-family: "Vazir", "Tahoma", sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #bbdefb);
       text-align: center;
       padding: 2rem;
       direction: rtl;
     }
     h1 {
-      color: #2c3e50;
+      color: #1a237e;
       margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 600px;
     }
     .set-input {
-      margin: 10px 0;
+      margin: 12px 0;
     }
     input {
       padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #90caf9;
       border-radius: 8px;
       width: 200px;
       text-align: center;
+      transition: all 0.3s;
+    }
+    input:focus {
+      border-color: #1976d2;
+      outline: none;
+      box-shadow: 0 0 4px #64b5f6;
     }
     button {
       margin: 10px;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border: none;
-      background-color: #3498db;
+      background-color: #1976d2;
       color: white;
       border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
     }
     button:hover {
-      background-color: #2980b9;
+      background-color: #0d47a1;
     }
     #result {
       margin-top: 20px;
       font-size: 1.2rem;
-      color: #27ae60;
+      color: #2e7d32;
       font-weight: bold;
-    }
-    .card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
     }
   </style>
 </head>
+
 <body>
   <div class="card">
-    <h1>ÂÒãÇíÔÇå ÑíÇÖí: ãÌãæÚååÇ</h1>
+    <h1>ğŸ§® Ø¢Ø²Ù…Ø§ÛŒØ´Ú¯Ø§Ù‡ Ù…Ø¬Ù…ÙˆØ¹Ù‡â€ŒÙ‡Ø§ - Ù¾Ø§ÛŒÙ‡ Ù†Ù‡Ù…</h1>
 
     <div id="step1">
-      <p>äÏ ãÌãæÚå ãíÎæÇåí æÇÑÏ ˜äí¿ (? ÊÇ ?)</p>
+      <p>Ú†Ù†Ø¯ Ù…Ø¬Ù…ÙˆØ¹Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡ÛŒ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØŸ (Û² ØªØ§ Û´)</p>
       <input type="number" id="numSets" min="2" max="4" value="2">
-      <button onclick="createSetInputs()">ÊÇííÏ</button>
+      <button onclick="createSetInputs()">ØªØ£ÛŒÛŒØ¯</button>
     </div>
 
     <div id="setInputs"></div>
@@ -84,17 +93,17 @@
       for (let i = 1; i <= num; i++) {
         container.innerHTML += `
           <div class="set-input">
-            <label>ãÌãæÚå ${i}: { </label>
-            <input type="text" id="set${i}" placeholder="ãËáÇğ 1,2,3">
+            <label>Ù…Ø¬Ù…ÙˆØ¹Ù‡ ${i}: { </label>
+            <input type="text" id="set${i}" placeholder="Ù…Ø«Ù„Ø§Ù‹ 1,2,3">
             <label> }</label>
           </div>
         `;
       }
 
       btns.innerHTML = `
-        <button onclick="union()">ÇÌÊãÇÚ</button>
-        <button onclick="intersection()">ÇÔÊÑÇ˜</button>
-        <button onclick="difference()">ÊİÇÖá (ãÌãæÚå ? ãäåÇí ÈŞíå)</button>
+        <button onclick="union()">Ø§Ø¬ØªÙ…Ø§Ø¹</button>
+        <button onclick="intersection()">Ø§Ø´ØªØ±Ø§Ú©</button>
+        <button onclick="difference()">ØªÙØ§Ø¶Ù„ (Ù…Ø¬Ù…ÙˆØ¹Ù‡ Û± Ù…Ù†Ù‡Ø§ÛŒ Ø¨Ù‚ÛŒÙ‡)</button>
       `;
     }
 
@@ -112,7 +121,7 @@
       getSets();
       let result = new Set();
       sets.forEach(s => s.forEach(x => result.add(x)));
-      showResult(result, "ÇÌÊãÇÚ");
+      showResult(result, "Ø§Ø¬ØªÙ…Ø§Ø¹");
     }
 
     function intersection() {
@@ -121,7 +130,7 @@
       for (let i = 1; i < sets.length; i++) {
         result = new Set([...result].filter(x => sets[i].has(x)));
       }
-      showResult(result, "ÇÔÊÑÇ˜");
+      showResult(result, "Ø§Ø´ØªØ±Ø§Ú©");
     }
 
     function difference() {
@@ -130,12 +139,11 @@
       for (let i = 1; i < sets.length; i++) {
         result = new Set([...result].filter(x => !sets[i].has(x)));
       }
-      showResult(result, "ÊİÇÖá");
+      showResult(result, "ØªÙØ§Ø¶Ù„");
     }
 
     function showResult(set, title) {
-      document.getElementById("result").innerHTML = 
-        `${title}: { ${[...set].join(", ")} }`;
+      document.getElementById("result").innerHTML = `${title}: { ${[...set].join(", ")} }`;
     }
   </script>
 </body>
