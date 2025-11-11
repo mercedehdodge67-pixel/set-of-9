@@ -23,12 +23,12 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
       padding: 20px;
       margin: 0 auto;
-      max-width: 600px;
+      max-width: 700px;
     }
     .set-input {
       margin: 12px 0;
     }
-    input {
+    input[type="text"] {
       padding: 8px;
       border: 1px solid #90caf9;
       border-radius: 8px;
@@ -36,53 +36,4 @@
       text-align: center;
       transition: all 0.3s;
     }
-    input:focus {
-      border-color: #1976d2;
-      outline: none;
-      box-shadow: 0 0 4px #64b5f6;
-    }
-    button {
-      margin: 10px;
-      padding: 10px 22px;
-      border: none;
-      background-color: #1976d2;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-size: 1rem;
-    }
-    button:hover {
-      background-color: #0d47a1;
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      color: #2e7d32;
-      font-weight: bold;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="card">
-    <h1>🧮 آزمایشگاه مجموعه‌ها - پایه نهم</h1>
-
-    <div id="step1">
-      <p>چند مجموعه می‌خواهی وارد کنی؟ (۲ تا ۴)</p>
-      <input type="number" id="numSets" min="2" max="4" value="2">
-      <button onclick="createSetInputs()">تأیید</button>
-    </div>
-
-    <div id="setInputs"></div>
-    <div id="buttons"></div>
-    <div id="result"></div>
-  </div>
-
-  <script>
-    let sets = [];
-
-    // ساخت ورودی مجموعه‌ها
-    function createSetInputs() {
-      const num = parseInt(document.getElementById("numSets").value);
-      const container = document.getElementById("s
+    input[type="text"]:
