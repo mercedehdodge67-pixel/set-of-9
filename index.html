@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¬“„«Ì‘ê«Â „Ã„Ê⁄ÂùÂ« - Å«ÌÂ ‰Â„</title>
+  <style>
+    body {
+      font-family: "Vazir", sans-serif;
+      background: #f5f7fa;
+      text-align: center;
+      padding: 2rem;
+      direction: rtl;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+    }
+    .set-input {
+      margin: 10px 0;
+    }
+    input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 200px;
+      text-align: center;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #3498db;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #27ae60;
+      font-weight: bold;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>¬“„«Ì‘ê«Â —Ì«÷Ì: „Ã„Ê⁄ÂùÂ«</h1>
+
+    <div id="step1">
+      <p>ç‰œ „Ã„Ê⁄Â „ÌùŒÊ«ÂÌ Ê«—œ ò‰Ìø (?  « ?)</p>
+      <input type="number" id="numSets" min="2" max="4" value="2">
+      <button onclick="createSetInputs()"> «ÌÌœ</button>
+    </div>
+
+    <div id="setInputs"></div>
+    <div id="buttons"></div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let sets = [];
+
+    function createSetInputs() {
+      const num = parseInt(document.getElementById("numSets").value);
+      const container = document.getElementById("setInputs");
+      const btns = document.getElementById("buttons");
+      container.innerHTML = "";
+      btns.innerHTML = "";
+      sets = [];
+
+      for (let i = 1; i <= num; i++) {
+        container.innerHTML += `
+          <div class="set-input">
+            <label>„Ã„Ê⁄Â ${i}: { </label>
+            <input type="text" id="set${i}" placeholder="„À·« 1,2,3">
+            <label> }</label>
+          </div>
+        `;
+      }
+
+      btns.innerHTML = `
+        <button onclick="union()">«Ã „«⁄</button>
+        <button onclick="intersection()">«‘ —«ò</button>
+        <button onclick="difference()"> ›«÷· („Ã„Ê⁄Â ? „‰Â«Ì »ﬁÌÂ)</button>
+      `;
+    }
+
+    function getSets() {
+      sets = [];
+      const num = parseInt(document.getElementById("numSets").value);
+      for (let i = 1; i <= num; i++) {
+        const input = document.getElementById("set" + i).value;
+        const arr = input.split(",").map(x => x.trim()).filter(x => x !== "");
+        sets.push(new Set(arr));
+      }
+    }
+
+    function union() {
+      getSets();
+      let result = new Set();
+      sets.forEach(s => s.forEach(x => result.add(x)));
+      showResult(result, "«Ã „«⁄");
+    }
+
+    function intersection() {
+      getSets();
+      let result = new Set(sets[0]);
+      for (let i = 1; i < sets.length; i++) {
+        result = new Set([...result].filter(x => sets[i].has(x)));
+      }
+      showResult(result, "«‘ —«ò");
+    }
+
+    function difference() {
+      getSets();
+      let result = new Set(sets[0]);
+      for (let i = 1; i < sets.length; i++) {
+        result = new Set([...result].filter(x => !sets[i].has(x)));
+      }
+      showResult(result, " ›«÷·");
+    }
+
+    function showResult(set, title) {
+      document.getElementById("result").innerHTML = 
+        `${title}: { ${[...set].join(", ")} }`;
+    }
+  </script>
+</body>
+</html>
